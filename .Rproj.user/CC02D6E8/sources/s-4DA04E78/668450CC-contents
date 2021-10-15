@@ -1,0 +1,5 @@
+library(janitor)
+library(readxl)
+UWLaw <- read_excel("C:/Users/sonab/Desktop/245M Data Wrangling/UWLaw.xlsx")
+
+tabyl(UWLaw, female, admit)
