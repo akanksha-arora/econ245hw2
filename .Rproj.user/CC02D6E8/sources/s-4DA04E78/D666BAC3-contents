@@ -1,0 +1,1 @@
+data <- read.csv("C:\Users\sonab\Desktop\245M Data Wrangling\UWLaw.xls")

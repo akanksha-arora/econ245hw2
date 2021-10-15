@@ -1,42 +1,24 @@
-#PART 2
-
 library(tidyverse)
-library(janitor)
+library(readr)
 library(dplyr)
 
-
-#1. Setting up the data
-#a.
 setwd("C:/Users/sonab/Desktop/245M Data Wrangling/HW2")
 airbnb <- read_csv("assign_2.csv")
 airbnb <- tibble(airbnb)
-
-#b.
 view(airbnb)
 colnames(airbnb)
-
-#c.
 airbnb <- rename(airbnb, neighborhood=neighbourhood)
 
-#2. Piping practice and creating summary statistics.
-#a.
 neighborhoods <- airbnb %>% count(neighborhood)
-
-#b.
 neighborhoods <- filter(neighborhoods, !is.na(neighborhood)) %>% arrange(desc(n)) %>% head(n=20)
-
-#c.
 airbnb_top_neighborhoods <- filter(airbnb, neighborhood %in% neighborhoods$neighborhood)
-
-#d.
 summary_stats_top_neighborhoods <- airbnb_top_neighborhoods %>% group_by(neighborhood) %>% 
-  summarise(avg_square_feet=mean(square_feet, na.rm=T), avg_price=mean(price, na.rm=T), sd_price=sd(price, na.rm=T), max_price=max(price, na.rm=T), min_price=min(price, na.rm=T)) %>% arrange(desc(avg_square_feet))
-#No, only square footage does not account for higher listing price.
+  summarise(avg_square_feet=mean(square_feet, na.rm=T), 
+            avg_price=mean(price, na.rm=T), 
+            sd_price=sd(price, na.rm=T), 
+            max_price=max(price, na.rm=T), 
+            min_price=min(price, na.rm=T)) %>% arrange(desc(avg_square_feet))
+View(summary_stats_top_neighborhoods)
 
-#e.
 highest_avg_square_ft <- summary_stats_top_neighborhoods[1,2]
 print(highest_avg_square_ft)
-
-#f.
-second_avg_price <- summary_stats_top_neighborhoods[2,2]
-print(second_avg_price)

@@ -1,0 +1,64 @@
+library(tidyverse)
+library(janitor)
+# PART 1 - Q1
+#(a)
+column_one <- c(8, 10, 4, 1, 30)
+#(b)
+column_two <- c("hello", "welcome", "to", "Econ", "245")
+#(c)
+column_three <- c(0, 0, 17, NA, 15)
+#(d)
+tibble_one <- tibble(column_one, column_two, column_three)
+#(e)
+data_type_one <- typeof(tibble_one$column_one)
+#(f)
+data_type_two <- typeof(tibble_one$column_two)
+
+# PART 1 - Q2
+#(a)
+summary_stats_column_one <- c(mean(column_one), sd(column_one), var(column_one))
+#(b)
+summary_stats_column_three <- c(mean(column_three, na.rm=T), sd(column_three, na.rm=T), var(column_three, na.rm=T))
+
+
+# PART 2 - Coding Assignment
+#1
+setwd("C:/Users/sonab/Desktop/245M Data Wrangling/HW1")
+festival_data <- read_csv("assign_2.csv")
+#3
+column_names_of_festival <- colnames(festival_data)
+#4
+column_names_of_festival_tibble <- tibble(column_names_of_festival)
+#5
+festival_data_unique <- festival_data %>%distinct()
+total_response <- nrow(festival_data_unique)
+#6
+festival_data_unique_subset <- festival_data_unique %>%
+  select(lodging, hours_attend, gender,spend_travel_total)
+#7
+males <- festival_data_unique_subset %>%
+  filter(gender == "Male")
+females <- festival_data_unique_subset %>%
+  filter(gender == "Female")
+#8
+males <- males %>%
+  summarize(mean_hours_male = mean(hours_attend, na.rm = T))
+#9
+females <- females %>%
+  summarize(mean_hours_female = mean(hours_attend, na.rm = T))
+#10
+festival_data_unique_subset %>%
+  group_by(gender) %>%
+  summarize(mean_hours_pnts = mean(hours_attend, na.rm = T))
+#11
+festival_data_unique_subset <- festival_data_unique_subset %>%
+  mutate(resident = ifelse(lodging == "Boulder Resident",1,0))
+clean_names(festival_data_unique_subset)
+#12
+festival_data_unique_subset <- festival_data_unique_subset %>%
+  mutate(non_resident = ifelse((lodging == "Hotel or motel" | lodging == "Friends, family or no expense"),1,0))
+clean_names(festival_data_unique_subset)
+#13
+frac_resident <- c(mean(festival_data_unique_subset$resident, na.rm = T))
+#14
+column_names_of_festival_tibble <- rename(column_names_of_festival_tibble,column_names = column_names_of_festival)
